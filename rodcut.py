@@ -6,13 +6,14 @@
 # V_n = max_i(e_i(V_n-c_i))
 # where n is points, e is effect, c is cost
 
-attrs = [
+skills = [
     {'cost': 2, 'effect': lambda x: x+2, 'name': 'bigger sword'},
     {'cost': 3, 'effect': lambda x: x+3, 'name': 'flaming sword'},
     {'cost': 3, 'effect': lambda x: x*3, 'name': 'pet lion'}
 ]
 
-# attrs = [
+# handout 2 p16
+# skills = [
 #     {'cost': 1, 'effect': lambda x: x+1, 'name': '1'},
 #     {'cost': 2, 'effect': lambda x: x+5, 'name': '2'},
 #     {'cost': 3, 'effect': lambda x: x+8, 'name': '3'},
@@ -33,17 +34,16 @@ def rodcut(w):
     if w not in memo:
         # initialise to 0
         memo[w] = 0
-        for attr in attrs:
+        for skill in skills:
             # if you don't know lambdas, they are simply variables you can treat like functions
-            attack = attr['effect'](rodcut(w - attr['cost']))
+            attack = skill['effect'](rodcut(w - skill['cost']))
             # keep track of the max
             if attack > memo[w]:
                 memo[w] = attack
-                choices[w] = attr['name']
+                choices[w] = skill['name']
 
     return memo[w]
 
 
-rodcut(8)
-print(memo)
+print(rodcut(5))
 print(choices)

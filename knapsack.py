@@ -2,13 +2,14 @@
 # C(v,i) = max(C(v,i-1), c_i + C(v-w_i, i-1))
 # where v is capacity, i is item idx
 
-attrs = [
+skills = [
     {'cost': 2, 'effect': lambda x: x+2, 'name': 'bigger sword'},
     {'cost': 3, 'effect': lambda x: x+3, 'name': 'flaming sword'},
     {'cost': 3, 'effect': lambda x: x*3, 'name': 'pet lion'},
 ]
 
-# attrs = [
+# 2015 q2
+# skills = [
 #     {'cost': 1, 'effect': lambda x: x+1},
 #     {'cost': 2, 'effect': lambda x: x+6},
 #     {'cost': 5, 'effect': lambda x: x+18},
@@ -26,7 +27,7 @@ def knapsack(w,i):
 
     if (w,i) not in memo:
         temp1 = knapsack(w,i-1)
-        temp2 = attrs[i]['effect'](knapsack(w-attrs[i]['cost'], i-1))
+        temp2 = skills[i]['effect'](knapsack(w-skills[i]['cost'], i-1))
 
         memo[(w,i)] = max(temp1, temp2)
 
@@ -34,6 +35,22 @@ def knapsack(w,i):
 
 
 
+
+w=6
+i=len(skills)-1
+knapsack(w,i)
+
+from numpy import zeros
+table = zeros((w+1,i+1))
+for tup in memo:
+    table[tup[0]][tup[1]] = memo[tup]
+
+print(table)
+
+
+
+
+# BOTTOM UP SOLUTION
 def fullmemo(w,i):
     if w < 0:
         return -999
@@ -45,18 +62,6 @@ def knapsack_bottomup(_w,_i):
     for w in range(_w+1):
         for i in range(_i+1):
             temp1 = fullmemo(w, i-1)
-            temp2 = attrs[i]['effect'](fullmemo(w-attrs[i]['cost'], i-1))
+            temp2 = skills[i]['effect'](fullmemo(w-skills[i]['cost'], i-1))
 
             memo[(w,i)] = max(temp1, temp2)
-
-
-w=8
-i=2
-knapsack(w,i)
-
-from numpy import zeros
-table = zeros((w+1,i+1))
-for tup in memo:
-    table[tup[0]][tup[1]] = memo[tup]
-
-print(table)
